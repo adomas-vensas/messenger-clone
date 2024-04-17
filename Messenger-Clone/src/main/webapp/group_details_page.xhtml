@@ -24,34 +24,24 @@
         <h:link value="Forums" outcome="/forum_page.xhtml" />
     </h:panelGrid>
 
-    <h1>Update Forum:</h1>
+    <h1>Group Details:</h1>
     <h:form>
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
-            <h:commandButton value="Delete Forum" action="#{forumDetailsBean.deleteForum}"/>
+            <h:commandButton value="Delete Group" action="#{groupDetailsBean.deleteGroup}"/>
 
-            <h:outputText value="Forum Name"/>
-            <h:inputText value="#{forumDetailsBean.forum.name}" requiredMessage="Forum name is required."/>
+            <h:outputText value="Group Name" required="true"/>
+            <h:inputText value="#{groupDetailsBean.group.name}" required="true"/>
 
-            <h:outputText value="Selected Groups"/>
+            <h:outputText value="Users"/>
             <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.selectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.selectedGroups}" var="grp"
-                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
+                <h:selectManyCheckbox value="#{groupDetailsBean.selectedUsers}" layout="pageDirection">
+                    <f:selectItems value="#{groupDetailsBean.users}" var="usr"
+                                   itemValue="#{usr}" itemLabel="#{usr.username}" />
 
                 </h:selectManyCheckbox>
             </div>
 
-            <h:outputText value="Available Groups"/>
-            <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.newSelectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.availableGroups}" var="grp"
-                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
-
-                </h:selectManyCheckbox>
-            </div>
-
-
-            <h:commandButton value="Update Forum" action="#{forumDetailsBean.updateForum}"/>
+            <h:commandButton value="Update Group" action="#{groupDetailsBean.updateGroup}"/>
         </h:panelGroup>
     </h:form>
 

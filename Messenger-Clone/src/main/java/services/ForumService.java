@@ -15,6 +15,9 @@ public class ForumService {
     @Inject
     private EntityManager em;
 
+    @Inject
+    private GroupService groupService;
+
     @Transactional
     public void saveForum(Forum message) {
         em.persist(message);
@@ -32,10 +35,20 @@ public class ForumService {
     }
 
     @Transactional
-    public void deleteForum(Long id) {
-        Forum message = em.find(Forum.class, id);
-        if (message != null) {
-            em.remove(message);
+    public void deleteForum(Long forumId) {
+        // Find the forum by id
+        Forum forum = findForumById(forumId);
+
+        // If the forum is found
+        if (forum != null) {
+            // Load the groups associated with the forum and set their forum to null
+            forum.getGroups().forEach(group -> {
+                group.setForum(null);
+                groupService.updateGroup(group); // Save the group with the now null forum
+            });
+
+            // Now delete the forum
+            em.remove(forum);
         }
     }
 

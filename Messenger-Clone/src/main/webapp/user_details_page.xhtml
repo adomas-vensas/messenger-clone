@@ -24,34 +24,24 @@
         <h:link value="Forums" outcome="/forum_page.xhtml" />
     </h:panelGrid>
 
-    <h1>Update Forum:</h1>
+    <h1>User Details:</h1>
     <h:form>
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
-            <h:commandButton value="Delete Forum" action="#{forumDetailsBean.deleteForum}"/>
+            <h:commandButton value="Delete User" action="#{userDetailsBean.deleteUser}"/>
 
-            <h:outputText value="Forum Name"/>
-            <h:inputText value="#{forumDetailsBean.forum.name}" requiredMessage="Forum name is required."/>
+            <h:outputText value="User Name" required="true"/>
+            <h:inputText value="#{userDetailsBean.user.username}" required="true"/>
 
-            <h:outputText value="Selected Groups"/>
+            <h:outputText value="Groups"/>
             <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.selectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.selectedGroups}" var="grp"
+                <h:selectManyCheckbox value="#{userDetailsBean.selectedGroups}" layout="pageDirection">
+                    <f:selectItems value="#{userDetailsBean.groups}" var="grp"
                                    itemValue="#{grp}" itemLabel="#{grp.name}" />
 
                 </h:selectManyCheckbox>
             </div>
 
-            <h:outputText value="Available Groups"/>
-            <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.newSelectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.availableGroups}" var="grp"
-                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
-
-                </h:selectManyCheckbox>
-            </div>
-
-
-            <h:commandButton value="Update Forum" action="#{forumDetailsBean.updateForum}"/>
+            <h:commandButton value="Update User" action="#{userDetailsBean.updateUser}"/>
         </h:panelGroup>
     </h:form>
 

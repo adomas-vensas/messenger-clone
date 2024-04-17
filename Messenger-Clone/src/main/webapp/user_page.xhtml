@@ -24,36 +24,42 @@
         <h:link value="Forums" outcome="/forum_page.xhtml" />
     </h:panelGrid>
 
-    <h1>Update Forum:</h1>
+    <h1>Users:</h1>
     <h:form>
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
-            <h:commandButton value="Delete Forum" action="#{forumDetailsBean.deleteForum}"/>
+            <h:outputText value="User Name" required="true"/>
+            <h:inputText value="#{createUser.user.username}" required="true"/>
 
-            <h:outputText value="Forum Name"/>
-            <h:inputText value="#{forumDetailsBean.forum.name}" requiredMessage="Forum name is required."/>
-
-            <h:outputText value="Selected Groups"/>
+            <h:outputText value="Groups"/>
             <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.selectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.selectedGroups}" var="grp"
+                <h:selectManyCheckbox value="#{createUser.selectedGroups}" layout="pageDirection">
+                    <f:selectItems value="#{createUser.groups}" var="grp"
                                    itemValue="#{grp}" itemLabel="#{grp.name}" />
 
                 </h:selectManyCheckbox>
             </div>
 
-            <h:outputText value="Available Groups"/>
-            <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.newSelectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.availableGroups}" var="grp"
-                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
-
-                </h:selectManyCheckbox>
-            </div>
-
-
-            <h:commandButton value="Update Forum" action="#{forumDetailsBean.updateForum}"/>
+            <h:commandButton value="Create User" action="#{createUser.createUser}"/>
         </h:panelGroup>
     </h:form>
+
+    <ul>
+        <ui:repeat value="#{createUser.users}" var="usr">
+            <li>
+                <h:link value="#{usr.username}" outcome="/user_details_page">
+                    <f:param name="userId" value="#{usr.id}" />
+                </h:link>
+
+                <ul style="list-style-type: square;">
+                    <ui:repeat value="#{usr.groups}" var="grp">
+                        <li>
+                            <h:outputText value="#{grp.name}"/>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </li>
+        </ui:repeat>
+    </ul>
 
 </h:body>
 </html>

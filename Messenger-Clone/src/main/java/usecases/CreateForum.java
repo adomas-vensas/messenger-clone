@@ -62,12 +62,13 @@ public class CreateForum {
         // Set the managed groups to the forum.
         forum.setGroups(managedGroups);
         forumService.saveForum(forum);
-        forums = forumService.getAllForums();
+
+        loadAllData();
     }
 
     public void loadAllData()
     {
-        groups = groupService.getAllGroups();
+        groups = groupService.getUnavailableGroups();
         forums = forumService.getAllForums();
     }
 

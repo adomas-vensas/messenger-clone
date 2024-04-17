@@ -12,7 +12,6 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @Table(name = "USERS")
-@EqualsAndHashCode
 public class User {
 
     @Id

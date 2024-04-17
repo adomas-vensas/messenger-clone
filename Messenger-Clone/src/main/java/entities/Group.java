@@ -4,14 +4,16 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.ibatis.javassist.util.HotSwapAgent;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter @Setter
 @Table(name = "GROUPS")
-@EqualsAndHashCode
 public class Group {
 
     @Id

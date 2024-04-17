@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:head>
+    <title>Messenger</title>
+    <style>
+        .scrollable-checkbox {
+            max-height: 200px; /* Adjust height as needed */
+            overflow-y: auto;  /* Enables vertical scrolling */
+            border: 1px solid #ccc; /* Optional: adds border around the scroll area */
+            padding: 5px; /* Optional: adds some padding inside the scroll area */
+        }
+    </style>
+</h:head>
+<h:body>
+
+    <h:panelGrid columns="3" style="width:300px; table-layout:fixed;">
+        <h:link value="Groups" outcome="/index.xhtml" />
+        <h:link value="Users" outcome="/user_page.xhtml" />
+        <h:link value="Forums" outcome="/forum_page.xhtml" />
+    </h:panelGrid>
+
+    <h1>Groups:</h1>
+    <h:form>
+        <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
+            <h:outputText value="Group Name" required="true"/>
+            <h:inputText value="#{createGroup.group.name}" required="true" requiredMessage="Group name is required."/>
+
+            <h:outputText value="Users"/>
+            <div class="scrollable-checkbox">
+                <h:selectManyCheckbox value="#{createGroup.selectedUsers}" layout="pageDirection">
+                    <f:selectItems value="#{createGroup.users}" var="user"
+                                   itemValue="#{user}" itemLabel="#{user.username}" />
+                </h:selectManyCheckbox>
+            </div>
+
+            <h:commandButton value="Create Group" action="#{createGroup.createGroup}"/>
+        </h:panelGroup>
+    </h:form>
+
+    <ul>
+        <ui:repeat value="#{createGroup.groups}" var="grp">
+            <li>
+                <h:link value="#{grp.name}" outcome="/group_details_page">
+                    <f:param name="groupId" value="#{grp.id}" />
+                </h:link>
+
+                <ul style="list-style-type: square;">
+                    <ui:repeat value="#{grp.users}" var="usr">
+                        <li>
+                            <h:outputText value="#{usr.username}"/>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </li>
+        </ui:repeat>
+    </ul>
+
+</h:body>
+</html>

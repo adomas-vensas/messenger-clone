@@ -21,6 +21,6 @@ public class Forum {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "forum", fetch = FetchType.EAGER)
     private Set<Group> groups = new HashSet<>();
 }
