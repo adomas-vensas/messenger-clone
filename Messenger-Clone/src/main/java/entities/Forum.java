@@ -1,19 +1,19 @@
 package entities;
 
+import jakarta.enterprise.inject.Default;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.Date;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "FORUMS")
 @Getter @Setter
-@Table(name = "GROUPS")
-@EqualsAndHashCode
-public class Group {
-
+public class Forum {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,10 +21,6 @@ public class Group {
     @Column(name = "NAME")
     private String name;
 
-    @ManyToMany(mappedBy = "groups")
-    private Set<User> users;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "forum_id")
-    private Forum forum;
+    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Group> groups = new HashSet<>();
 }

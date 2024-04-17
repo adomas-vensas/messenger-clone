@@ -1,32 +1,33 @@
 package entities;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter @Setter
 @Table(name = "USERS")
+@EqualsAndHashCode
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "USERNAME")
     private String username;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_group", // Name of the join table
             joinColumns = @JoinColumn(name = "user_id"), // Foreign key for User in user_group table
             inverseJoinColumns = @JoinColumn(name = "group_id") // Foreign key for Group in user_group table
     )
-    private Set<Group> groups;
+    private Set<Group> groups = new HashSet<Group>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Message> messages;
 }

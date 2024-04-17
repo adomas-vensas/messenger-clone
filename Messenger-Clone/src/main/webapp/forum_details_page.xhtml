@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:head>
+    <title>Messenger</title>
+    <style>
+        .scrollable-checkbox {
+            max-height: 200px; /* Adjust height as needed */
+            overflow-y: auto;  /* Enables vertical scrolling */
+            border: 1px solid #ccc; /* Optional: adds border around the scroll area */
+            padding: 5px; /* Optional: adds some padding inside the scroll area */
+        }
+    </style>
+</h:head>
+<h:body>
+
+    <h:panelGrid columns="3" style="width:300px; table-layout:fixed;">
+        <h:link value="Groups" outcome="/index.xhtml" />
+        <h:link value="Users" outcome="/user_page.xhtml" />
+        <h:link value="Forums" outcome="/forum_page.xhtml" />
+    </h:panelGrid>
+
+    <h1>Update Forum:</h1>
+    <h:form>
+        <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
+            <h:outputText value="Forum Name"/>
+            <h:inputText value="#{forumDetailsBean.forum.name}" requiredMessage="Forum name is required."/>
+
+            <h:outputText value="Selected Groups"/>
+            <div class="scrollable-checkbox">
+                <h:selectManyCheckbox value="#{forumDetailsBean.selectedGroups}" layout="pageDirection">
+                    <f:selectItems value="#{forumDetailsBean.availableGroups}" var="grp"
+                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
+
+                </h:selectManyCheckbox>
+            </div>
+
+            <h:outputText value="Available Groups"/>
+            <div class="scrollable-checkbox">
+                <h:selectManyCheckbox value="#{forumDetailsBean.selectedGroups}" layout="pageDirection">
+                    <f:selectItems value="#{forumDetailsBean.unavailableGroups}" var="grp"
+                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
+                </h:selectManyCheckbox>
+            </div>
+
+            <h:commandButton value="Update Forum" action="#{forumDetailsBean.updateForm}"/>
+        </h:panelGroup>
+    </h:form>
+
+</h:body>
+</html>
