@@ -21,7 +21,7 @@
     <h:panelGrid columns="3" style="width:300px; table-layout:fixed;">
         <h:link value="Groups" outcome="/index.xhtml" />
         <h:link value="Users" outcome="/user_page.xhtml" />
-        <h:link value="Forums" outcome="/forum_page.xhtml" />
+        <h:link value="Forums" outcome="/batis_forum_page.xhtml" />
     </h:panelGrid>
 
     <h1>Groups:</h1>
@@ -52,7 +52,9 @@
                 <ul style="list-style-type: square;">
                     <ui:repeat value="#{grp.users}" var="usr">
                         <li>
-                            <h:outputText value="#{usr.username}"/>
+                            <h:link value="#{usr.username}" outcome="/user_details_page">
+                                <f:param name="userId" value="#{usr.id}" />
+                            </h:link>
                         </li>
                     </ui:repeat>
                 </ul>

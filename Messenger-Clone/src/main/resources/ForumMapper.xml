@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress ALL -->
+<mapper namespace="mappers.ForumMapper">
+
+    <!-- Result map for Group -->
+    <resultMap id="groupMap" type="entities.Group">
+        <id column="group_id" jdbcType="BIGINT" property="id" />
+        <result column="group_name" jdbcType="VARCHAR" property="name" />
+        <association property="forum" javaType="entities.Forum">
+            <id column="forum_id" jdbcType="BIGINT" property="id" />
+        </association>
+    </resultMap>
+
+    <!-- Extended result map for Forum with nested groups -->
+    <resultMap id="forumMapWithGroups" type="entities.Forum">
+        <id column="forum_id" jdbcType="BIGINT" property="id" />
+        <result column="forum_name" jdbcType="VARCHAR" property="name" />
+        <collection property="groups" resultMap="groupMap" />
+    </resultMap>
+
+    <insert id="insertForum" keyColumn="ID" keyProperty="id" parameterType="entities.Forum" useGeneratedKeys="true">
+        insert into FORUMS (NAME)
+        values (#{name,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getAllForums" resultMap="forumMapWithGroups">
+        SELECT f.ID as forum_id, f.NAME as forum_name,
+               g.ID as group_id, g.NAME as group_name
+        FROM FORUMS f
+                 LEFT JOIN GROUPS g ON f.ID = g.FORUM_ID
+    </select>
+</mapper>

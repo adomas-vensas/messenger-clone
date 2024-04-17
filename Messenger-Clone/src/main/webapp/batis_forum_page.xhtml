@@ -24,36 +24,43 @@
         <h:link value="Forums" outcome="/batis_forum_page.xhtml" />
     </h:panelGrid>
 
-    <h1>Update Forum:</h1>
+    <h1>Forums:</h1>
     <h:form>
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
-            <h:commandButton value="Delete Forum" action="#{forumDetailsBean.deleteForum}"/>
-
-            <h:outputText value="Forum Name"/>
-            <h:inputText value="#{forumDetailsBean.forum.name}" requiredMessage="Forum name is required."/>
-
-            <h:outputText value="Selected Groups"/>
-            <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.selectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.selectedGroups}" var="grp"
-                                   itemValue="#{grp}" itemLabel="#{grp.name}" />
-
-                </h:selectManyCheckbox>
-            </div>
+            <h:outputText value="Forum Name" required="true"/>
+            <h:inputText value="#{createForumBatis.forum.name}" required="true" requiredMessage="Forum name is required."/>
 
             <h:outputText value="Available Groups"/>
             <div class="scrollable-checkbox">
-                <h:selectManyCheckbox value="#{forumDetailsBean.newSelectedGroups}" layout="pageDirection">
-                    <f:selectItems value="#{forumDetailsBean.availableGroups}" var="grp"
+                <h:selectManyCheckbox value="#{createForumBatis.selectedGroups}" layout="pageDirection">
+                    <f:selectItems value="#{createForumBatis.groups}" var="grp"
                                    itemValue="#{grp}" itemLabel="#{grp.name}" />
-
                 </h:selectManyCheckbox>
             </div>
 
-
-            <h:commandButton value="Update Forum" action="#{forumDetailsBean.updateForum}"/>
+            <h:commandButton value="Create Forum" action="#{createForumBatis.createForum}"/>
         </h:panelGroup>
     </h:form>
+
+    <ul id="groupList">
+        <ui:repeat value="#{createForumBatis.forums}" var="frm">
+            <li>
+                <h:link value="#{frm.name}" outcome="/forum_details_page">
+                    <f:param name="forumId" value="#{frm.id}" />
+                </h:link>
+
+                <ul style="list-style-type: square;">
+                    <ui:repeat value="#{frm.groups}" var="grp">
+                        <li>
+                            <h:link value="#{grp.name}" outcome="/group_details_page">
+                                <f:param name="groupId" value="#{grp.id}" />
+                            </h:link>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </li>
+        </ui:repeat>
+    </ul>
 
 </h:body>
 </html>
