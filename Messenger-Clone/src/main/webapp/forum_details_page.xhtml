@@ -15,6 +15,49 @@
             padding: 5px; /* Optional: adds some padding inside the scroll area */
         }
     </style>
+    <script>
+        async function deleteForum(forumId) {
+            const response = await fetch(`http://localhost:8090/Messenger-Clone-1.0-SNAPSHOT/api/forums/` + forumId, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                console.log('Forum deleted successfully.');
+                window.location.href = 'http://localhost:8090/Messenger-Clone-1.0-SNAPSHOT/batis_forum_page.xhtml'
+            } else {
+                console.log('Failed to delete forum.');
+            }
+        }
+
+        async function updateForum(forumId) {
+            const forumName = document.getElementById('forumName').value;
+            const selectedGroups = Array.from(document.querySelectorAll('input[name="selectedGroups"]:checked'))
+                .map(input => input.value);
+            const newSelectedGroups = Array.from(document.querySelectorAll('input[name="newSelectedGroups"]:checked'))
+                .map(input => input.value);
+
+            const requestBody = {
+                name: forumName,
+                groupIds: [...selectedGroups, ...newSelectedGroups]
+            };
+
+            const response = await fetch(`http://localhost:8090/Messenger-Clone-1.0-SNAPSHOT/api/forums/` + forumId, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                alert('Forum updated successfully.');
+                // Add any additional handling here, e.g., redirect
+            } else {
+                alert('Failed to update forum.');
+            }
+        }
+    </script>
+
 </h:head>
 <h:body>
 
@@ -27,7 +70,7 @@
     <h1>Update Forum:</h1>
     <h:form>
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
-            <h:commandButton value="Delete Forum" action="#{forumDetailsBean.deleteForum}"/>
+            <h:commandButton value="Delete Forum" onclick="deleteForum('#{forumDetailsBean.forum.id}')"/>
 
             <h:outputText value="Forum Name"/>
             <h:inputText value="#{forumDetailsBean.forum.name}" requiredMessage="Forum name is required."/>
@@ -51,7 +94,7 @@
             </div>
 
 
-            <h:commandButton value="Update Forum" action="#{forumDetailsBean.updateForum}"/>
+            <h:commandButton value="Update Forum" onclick="updateForum('#{forumDetailsBean.forum.id}')"/>
         </h:panelGroup>
     </h:form>
 

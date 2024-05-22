@@ -38,29 +38,34 @@
                 </h:selectManyCheckbox>
             </div>
 
-            <h:commandButton value="Create Forum" action="#{createForumBatis.createForum}"/>
+            <h:commandButton value="Create Forum" actionListener="#{createForumBatis.createForum()}" action="/batis_forum_page?faces-redirect=true"/>
         </h:panelGroup>
     </h:form>
 
     <ul id="groupList">
         <ui:repeat value="#{createForumBatis.forums}" var="frm">
             <li>
-                <h:link value="#{frm.name}" outcome="/forum_details_page">
-                    <f:param name="forumId" value="#{frm.id}" />
-                </h:link>
+                <h:panelGroup rendered="#{not empty frm.name}">
+                    <h:link value="#{frm.name} #{frm.userCount}" outcome="/forum_details_page">
+                        <f:param name="forumId" value="#{frm.id}" />
+                    </h:link>
+                </h:panelGroup>
 
-                <ul style="list-style-type: square;">
+                <ul style="list-style-type: none;">
                     <ui:repeat value="#{frm.groups}" var="grp">
                         <li>
-                            <h:link value="#{grp.name}" outcome="/group_details_page">
-                                <f:param name="groupId" value="#{grp.id}" />
-                            </h:link>
+                            <h:panelGroup rendered="#{not empty grp.name}">
+                                <h:link value="#{grp.name}" outcome="/group_details_page">
+                                    <f:param name="groupId" value="#{grp.id}" />
+                                </h:link>
+                            </h:panelGroup>
                         </li>
                     </ui:repeat>
                 </ul>
             </li>
         </ui:repeat>
     </ul>
+
 
 </h:body>
 </html>

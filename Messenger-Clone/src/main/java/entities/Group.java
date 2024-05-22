@@ -24,7 +24,7 @@ public class Group {
     private String name;
 
     @ManyToMany(mappedBy = "groups")
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "forum_id")
