@@ -27,8 +27,8 @@
     <h1>Groups:</h1>
     <h:form>
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
-            <h:outputText value="Group Name" required="true"/>
-            <h:inputText value="#{createGroup.group.name}" required="true" requiredMessage="Group name is required."/>
+            <h:outputText value="Group Name"/>
+            <h:inputText value="#{createGroup.group.name}"/>
 
             <h:outputText value="Users"/>
             <div class="scrollable-checkbox">
@@ -38,6 +38,7 @@
                 </h:selectManyCheckbox>
             </div>
 
+            <h:commandButton value="Sort" actionListener="#{createGroup.sortGroups}"/>
             <h:commandButton value="Create Group" action="#{createGroup.createGroup}"/>
         </h:panelGroup>
     </h:form>
@@ -49,7 +50,12 @@
                     <f:param name="groupId" value="#{grp.id}" />
                 </h:link>
 
-                <ul style="list-style-type: square;">
+                <h:form>
+                    <h:commandButton value="load users" actionListener="#{groupUserLoader.loadGroupUsers(grp.id)}" rendered="#{!groupUserLoader.groupsWithLoadedUsers.containsKey(grp.id)}" />
+                    <h:outputLabel rendered="#{groupUserLoader.groupsWithLoadedUsers.containsKey(grp.id) &amp;&amp; !groupUserLoader.groupsWithLoadedUsers.get(grp.id).isDone()}" value="loading users..."/>
+                </h:form>
+
+                <ul style="display: #{(groupUserLoader.groupsWithLoadedUsers.containsKey(grp.id) &amp;&amp; groupUserLoader.groupsWithLoadedUsers.get(grp.id).isDone()) ? 'block' : 'none'}">
                     <ui:repeat value="#{grp.users}" var="usr">
                         <li>
                             <h:link value="#{usr.username}" outcome="/user_details_page">
@@ -58,6 +64,7 @@
                         </li>
                     </ui:repeat>
                 </ul>
+
             </li>
         </ui:repeat>
     </ul>
