@@ -4,6 +4,7 @@ import entities.Forum;
 import entities.Group;
 import entities.Group;
 import entities.User;
+import interfaces.GenericService;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -13,7 +14,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 @RequestScoped
-public class GroupService {
+public class GroupService implements GenericService<Group> {
 
     @Inject
     @PersistenceContext
@@ -23,12 +24,12 @@ public class GroupService {
     private UserService userService;
 
     @Transactional
-    public void saveGroup(Group group) {
+    public void save(Group group) {
         em.persist(group);
     }
 
     @Transactional
-    public Group findGroupById(Long id) {
+    public Group findById(Long id) {
         return em.find(Group.class, id);
     }
 
@@ -39,8 +40,8 @@ public class GroupService {
     }
 
     @Transactional
-    public void deleteGroup(Long id) {
-        Group group = findGroupById(id);
+    public void delete(Long id) {
+        Group group = findById(id);
 
         if (group != null) {
             group.getUsers().forEach(user -> {
@@ -53,12 +54,12 @@ public class GroupService {
     }
 
     @Transactional
-    public List<Group> getAllGroups() {
+    public List<Group> getAll() {
         return em.createQuery("SELECT g FROM Group g", Group.class).getResultList();
     }
 
     @Transactional
-    public Group updateGroup(Group group)
+    public Group update(Group group)
     {
         return em.merge(group);
     }
@@ -71,7 +72,6 @@ public class GroupService {
                 .setParameter("forum", forum)
                 .getResultList();
     }
-
 
     @Transactional
     public List<Group> getUnavailableGroups()

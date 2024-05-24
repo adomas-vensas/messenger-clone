@@ -68,12 +68,12 @@ public class UserDetailsBean implements Serializable {
         Set<Group> managedGroups = new HashSet<>();
 
         for (Group previousGroup : previousGroups) {
-            Group managedGroup = groupService.updateGroup(previousGroup);
+            Group managedGroup = groupService.update(previousGroup);
             managedGroup.getUsers().remove(user);
         }
 
         for (Group selectedGroup : selectedGroups) {
-            Group managedGroup = groupService.updateGroup(selectedGroup);
+            Group managedGroup = groupService.update(selectedGroup);
             managedGroup.getUsers().add(user);
             managedGroups.add(managedGroup);
         }
@@ -98,7 +98,7 @@ public class UserDetailsBean implements Serializable {
         previousGroups = user.getGroups();
         selectedGroups = new ArrayList<>(user.getGroups());
 
-        groups = groupService.getAllGroups();
+        groups = groupService.getAll();
     }
 
 }

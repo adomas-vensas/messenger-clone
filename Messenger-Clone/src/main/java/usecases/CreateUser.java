@@ -57,7 +57,7 @@ public class CreateUser {
 
     public void loadAllData()
     {
-        groups = groupService.getAllGroups();
+        groups = groupService.getAll();
         users = userService.getAllUsers();
     }
 

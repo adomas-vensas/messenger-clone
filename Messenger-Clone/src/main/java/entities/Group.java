@@ -29,4 +29,12 @@ public class Group {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "forum_id")
     private Forum forum;
+
+    @Basic
+    @Column(name = "PAGE_VIEWCOUNT")
+    private Integer viewCount = 0;
+
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private Integer version;
 }

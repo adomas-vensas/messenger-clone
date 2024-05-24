@@ -58,7 +58,7 @@ public class CreateForumBatis implements Serializable {
         Set<Group> managedGroups = new HashSet<>();
 
         for (Group selectedGroup : selectedGroups) {
-            Group managedGroup = groupService.updateGroup(selectedGroup);
+            Group managedGroup = groupService.update(selectedGroup);
             managedGroup.setForum(forum);
             managedGroups.add(managedGroup);
         }

@@ -6,6 +6,7 @@ import entities.Forum;
 import entities.Group;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -68,7 +69,7 @@ public class ForumController {
     public Response insertForum(ForumCreationRequest request)
     {
         Set<Group> groups = request.getGroupIds().stream()
-                .map(groupId -> groupService.findGroupById(groupId))
+                .map(groupId -> groupService.findById(groupId))
                 .collect(Collectors.toSet());
 
         Forum newForum = new Forum();
@@ -80,7 +81,7 @@ public class ForumController {
         for(Group group : groups)
         {
             group.setForum(newForum);
-            groupService.updateGroup(group);
+            groupService.update(group);
         }
 
         return Response.status(Response.Status.OK).build();
@@ -101,7 +102,7 @@ public class ForumController {
         }
 
         Set<Group> groups = request.getGroupIds().stream()
-                .map(groupId -> groupService.findGroupById(groupId))
+                .map(groupId -> groupService.findById(groupId))
                 .collect(Collectors.toSet());
 
         if (groups.size() < request.getGroupIds().size())
@@ -111,12 +112,18 @@ public class ForumController {
 
         forum.setGroups(groups);
 
-        forumService.updateForum(forum);
-
-        for(Group group : groups)
+        try
         {
-            group.setForum(forum);
-            groupService.updateGroup(group);
+            forumService.updateForum(forum);
+            for(Group group : groups)
+            {
+                group.setForum(forum);
+                groupService.update(group);
+            }
+        }
+        catch (OptimisticLockException ole)
+        {
+            return Response.status(Response.Status.CONFLICT).build();
         }
 
         return Response.ok(Response.Status.OK).build();
@@ -137,7 +144,7 @@ public class ForumController {
 
             for (Group group : forum.getGroups()) {
                 group.setForum(null);
-                groupService.updateGroup(group);
+                groupService.update(group);
             }
 
             forumService.deleteForum(forumId);

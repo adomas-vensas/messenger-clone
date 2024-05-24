@@ -8,6 +8,8 @@ import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
@@ -16,10 +18,8 @@ import services.ForumService;
 import services.GroupService;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Named
@@ -68,18 +68,18 @@ public class ForumDetailsBean implements Serializable {
         Set<Group> managedGroups = new HashSet<>();
 
         for (Group previousGroup : _previousGroups) {
-            Group managedGroup = groupService.updateGroup(previousGroup); // Ensure the group is managed.
+            Group managedGroup = groupService.update(previousGroup); // Ensure the group is managed.
             managedGroup.setForum(null); // Set the forum for each managed group.
         }
 
         for (Group selectedGroup : selectedGroups) {
-            Group managedGroup = groupService.updateGroup(selectedGroup); // Ensure the group is managed.
+            Group managedGroup = groupService.update(selectedGroup); // Ensure the group is managed.
             managedGroup.setForum(forum); // Set the forum for each managed group.
             managedGroups.add(managedGroup); // Add the managed group to the set.
         }
 
         for (Group selectedGroup : newSelectedGroups) {
-            Group managedGroup = groupService.updateGroup(selectedGroup); // Ensure the group is managed.
+            Group managedGroup = groupService.update(selectedGroup); // Ensure the group is managed.
             managedGroup.setForum(forum); // Set the forum for each managed group.
             managedGroups.add(managedGroup); // Add the managed group to the set.
         }
@@ -91,11 +91,16 @@ public class ForumDetailsBean implements Serializable {
     }
 
     @Transactional
-    public String deleteForum()
+    public void deleteForum()
     {
         forumService.deleteForum(forum.getId());
-
-        return "/forum_page?faces-redirect=true";
+        CompletableFuture.runAsync(() ->{
+            try {
+                Thread.sleep(3000);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        });
     }
 
     @Transactional

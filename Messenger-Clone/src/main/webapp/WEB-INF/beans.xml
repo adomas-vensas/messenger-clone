@@ -7,6 +7,16 @@
         bean-discovery-mode="all">
 
     <interceptors>
-        <class>interceptors.MethodLogger</class>
+        <class>interceptors.PerformanceLoggingInterceptor</class>
     </interceptors>
+
+    <decorators>
+        <class>decorators.GroupViewCountDecorator</class>
+    </decorators>
+
+    <alternatives>
+<!--        <class>alternatives.SortByName</class>-->
+        <class>alternatives.SortByPopularity</class>
+    </alternatives>
+
 </beans>

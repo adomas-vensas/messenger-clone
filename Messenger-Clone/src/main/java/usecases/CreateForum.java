@@ -54,7 +54,7 @@ public class CreateForum {
         // For each selected group, merge it into the persistence context
         // and set the forum.
         for (Group selectedGroup : selectedGroups) {
-            Group managedGroup = groupService.updateGroup(selectedGroup); // Ensure the group is managed.
+            Group managedGroup = groupService.update(selectedGroup); // Ensure the group is managed.
             managedGroup.setForum(forum); // Set the forum for each managed group.
             managedGroups.add(managedGroup); // Add the managed group to the set.
         }

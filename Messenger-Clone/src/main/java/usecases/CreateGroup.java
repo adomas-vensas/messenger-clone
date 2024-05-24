@@ -2,6 +2,8 @@ package usecases;
 
 import entities.Group;
 import entities.User;
+import interceptors.LogPerformance;
+import interfaces.GroupAlternative;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Named
 @RequestScoped
+@LogPerformance
 public class CreateGroup {
 
     @Getter @Setter
@@ -38,6 +41,9 @@ public class CreateGroup {
     @Inject
     private UserService userService;
 
+    @Inject
+    private GroupAlternative groupSorter;
+
     @PostConstruct
     public void init() {
         loadAllData(); // Load groups when bean is initialized
@@ -51,14 +57,18 @@ public class CreateGroup {
         }
 
         group.setUsers(new HashSet<User>(selectedUsers));
-        groupService.saveGroup(group);
-        groups = groupService.getAllGroups();
+        groupService.save(group);
+        groups = groupService.getAll();
     }
 
     public void loadAllData()
     {
-        groups = groupService.getAllGroups();
+        groups = groupService.getAll();
         users = userService.getAllUsers();
+    }
+
+    public void sortGroups(){
+        this.groups = groupSorter.groupAlternate(groups);
     }
 
 }

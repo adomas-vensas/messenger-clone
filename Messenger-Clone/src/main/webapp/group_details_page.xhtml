@@ -29,6 +29,9 @@
         <h:panelGroup layout="block" style="display: flex; flex-direction: column; width: 150px">
             <h:commandButton value="Delete Group" action="#{groupDetailsBean.deleteGroup}"/>
 
+            <h:outputText value="View Count: #{groupDetailsBean.group.viewCount}" required="true"/>
+            <br/>
+            <br/>
             <h:outputText value="Group Name" required="true"/>
             <h:inputText value="#{groupDetailsBean.group.name}" required="true"/>
 

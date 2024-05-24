@@ -52,7 +52,7 @@ public class UserService {
             // Load the groups associated with the forum and set their forum to null
             user.getGroups().forEach(group -> {
                 group.getUsers().remove(user);
-                groupService.updateGroup(group); // Save the group with the now null forum
+                groupService.update(group); // Save the group with the now null forum
             });
 
             // Now delete the forum

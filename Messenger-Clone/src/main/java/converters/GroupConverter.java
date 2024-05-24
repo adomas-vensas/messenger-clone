@@ -17,7 +17,7 @@ public class GroupConverter implements Converter<Group> {
     @Override
     public Group getAsObject(FacesContext context, UIComponent component, String value) {
         // Implementation to convert the unique String identifier back to a Group object
-        return groupService.findGroupById(Long.valueOf(value));
+        return groupService.findById(Long.valueOf(value));
     }
 
     @Override

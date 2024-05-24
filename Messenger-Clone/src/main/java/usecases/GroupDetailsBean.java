@@ -57,7 +57,7 @@ public class GroupDetailsBean implements Serializable {
         }
 
         Long numUserId = Long.valueOf(id);
-        group = groupService.findGroupById(numUserId);
+        group = groupService.findById(numUserId);
 
         loadAllData(group);
     }
@@ -86,7 +86,7 @@ public class GroupDetailsBean implements Serializable {
 
         // Update the group's set of users
         group.setUsers(managedUsers);
-        groupService.updateGroup(group);
+        groupService.update(group);
 
         return "/index?faces-redirect=true";
     }
@@ -94,7 +94,7 @@ public class GroupDetailsBean implements Serializable {
     @Transactional
     public String deleteGroup()
     {
-        groupService.deleteGroup(group.getId());
+        groupService.delete(group.getId());
 
         return "/index?faces-redirect=true";
     }
